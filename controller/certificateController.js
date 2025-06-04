@@ -38,7 +38,7 @@ exports.addCertificate = async (req, res) => {
       name,
       course,
       completionDate,
-      certificateUrl: `/uploads/certificates/${certFile.filename}`,
+      certificateUrl: `${certFile.path}`,
     });
 
     await newCert.save();
