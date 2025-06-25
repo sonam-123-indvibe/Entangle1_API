@@ -3,18 +3,25 @@ const express = require('express');
 const mimeType = require('mime-types')
 
 // Add media (photo/video)
+// controller/GallearyController.js
+const multer = require('multer');
+
+// Add media (photo/video)
 exports.addMedia = async (req, res) => {
   try {
-    const { name, type } = req.body;
+    const { name } = req.body;
     const file = req.file;
 
     if (!file) return res.status(400).json({ error: "No file uploaded" });
 
-    
     const mimeType = file.mimetype;
-    if (!["image/jpeg", "image/png", "video/mp4"].includes(mimeType)) {
+    const supportedTypes = ["image/jpeg", "image/png", "video/mp4", "video/quicktime", "video/x-msvideo"];
+    
+    if (!supportedTypes.includes(mimeType)) {
       return res.status(400).json({ error: "Unsupported file type" });
     }
+
+    const type = mimeType.startsWith('image/') ? 'image' : 'video';
 
     const newMedia = new GallearySchema({
       name,
@@ -29,6 +36,7 @@ exports.addMedia = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
 
 exports.deleteMedia = async (req, res) => {
   try {
