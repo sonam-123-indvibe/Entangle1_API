@@ -21,7 +21,7 @@ exports.addMedia = async (req, res) => {
       return res.status(400).json({ error: "Unsupported file type" });
     }
 
-    const type = mimeType.startsWith('image/') ? 'image' : 'video';
+    const type = mimeType.startsWith('image/') ? 'photo' : 'video';
 
     const newMedia = new GallearySchema({
       name,
